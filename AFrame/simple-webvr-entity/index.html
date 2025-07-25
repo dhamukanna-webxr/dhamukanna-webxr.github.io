@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebVR Room - Entity Only</title>
+    <meta name="description" content="WebVR Room for Meta Quest using only a-entity">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      
+      <!-- Sky / Background -->
+      <a-entity geometry="primitive: sphere; radius: 5000"
+                material="color: #ECECEC; side: back"
+                scale="-1 1 1">
+      </a-entity>
+
+      <!-- Floor -->
+      <a-entity geometry="primitive: plane; width: 10; height: 10"
+                material="src: textures/wooden-flooring.jpg; repeat: 2 2; roughness: 1"
+                rotation="-90 0 0"
+                position="0 0 0">
+      </a-entity>
+
+      <!-- Walls -->
+      <!-- Back Wall -->
+      <a-entity geometry="primitive: box; width: 10; height: 3; depth: 0.1"
+                material="color: #ccc"
+                position="0 1.5 -5">
+      </a-entity>
+
+      <!-- Left Wall -->
+      <a-entity geometry="primitive: box; width: 10; height: 3; depth: 0.1"
+                material="color: #ddd"
+                rotation="0 90 0"
+                position="-5 1.5 0">
+      </a-entity>
+
+      <!-- Right Wall -->
+      <a-entity geometry="primitive: box; width: 10; height: 3; depth: 0.1"
+                material="color: #ddd"
+                rotation="0 90 0"
+                position="5 1.5 0">
+      </a-entity>
+
+      <!-- Ceiling -->
+      <a-entity geometry="primitive: box; width: 10; height: 10; depth: 0.1"
+                material="color: #eee"
+                rotation="90 0 0"
+                position="0 3 0">
+      </a-entity>
+
+      <!-- Objects in the room -->
+      <!-- Cube -->
+      <a-entity geometry="primitive: box; width: 1; height: 1; depth: 1"
+                material="color: #4CC3D9"
+                position="0 0.5 -3">
+      </a-entity>
+
+      <!-- Sphere -->
+      <a-entity geometry="primitive: sphere; radius: 0.5"
+                material="color: #EF2D5E"
+                position="-2 1 -4">
+      </a-entity>
+
+      <!-- Cylinder -->
+      <a-entity geometry="primitive: cylinder; height: 1.5; radius: 0.5"
+                material="color: #FFC65D"
+                position="2 0.75 -4">
+      </a-entity>
+
+
+      <!-- Camera -->
+      <a-entity camera look-controls wasd-controls position="0 1.6 0"></a-entity>
+
+      <!-- Ambient light -->
+      <a-entity light="type: ambient; color: #00f0ff; intensity: 0.4"></a-entity>
+
+      <!-- Directional light -->
+      <a-entity light="type: directional; color: #000fff; intensity: 1"
+          position="0 5 5"
+          rotation="-45 0 0">
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
