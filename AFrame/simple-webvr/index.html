@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebVR Room - Meta Quest</title>
+    <meta name="description" content="Simple WebVR Room">
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Skybox or Background -->
+      <a-sky color="#ECECEC"></a-sky>
+
+      <!-- Floor -->
+      <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+
+      <!-- Walls (simple cube room) -->
+      <a-box position="0 1.5 -5" depth="0.1" height="3" width="10" color="#ccc"></a-box> <!-- Back Wall -->
+      <a-box position="-5 1.5 0" rotation="0 90 0" depth="0.1" height="3" width="10" color="#ddd"></a-box> <!-- Left Wall -->
+      <a-box position="5 1.5 0" rotation="0 90 0" depth="0.1" height="3" width="10" color="#ddd"></a-box> <!-- Right Wall -->
+      <a-box position="0 3 0" rotation="90 0 0" depth="0.1" height="10" width="10" color="#eee"></a-box> <!-- Ceiling -->
+
+      <!-- Optional: Add objects in the room -->
+      <a-box position="0 0.5 -3" depth="1" height="1" width="1" color="#4CC3D9"></a-box>
+      <a-sphere position="-2 1 -4" radius="0.5" color="#EF2D5E"></a-sphere>
+      <a-cylinder position="2 0.75 -4" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+
+      <!-- Camera rig for head-tracking -->
+      <a-entity camera wasd-controls look-controls position="0 1.6 0"></a-entity>
+    </a-scene>
+  </body>
+</html>

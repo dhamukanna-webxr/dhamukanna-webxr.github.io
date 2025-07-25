@@ -10,11 +10,24 @@
 
     <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       
+      <a-assets>
+        <a-asset-item id="glass" src="models/glasses.glb"></a-asset-item>
+        <a-asset-item id="pixel" src="models/Pixel.glb"></a-asset-item>
+        <a-asset-item id="sunglasses" src="models/Sunglasses.glb"></a-asset-item>
+        <a-asset-item id="tophat" src="models/Top_hat.glb"></a-asset-item>
+      </a-assets>
+
       <a-camera active="false" position="0 0 0"></a-camera>
       
-      <a-entity mindar-face-target="anchorIndex: 1">
-	      <a-sphere color="green" radius="0.1"></a-sphere>
+      <a-entity mindar-face-target="anchorIndex: 168">
+	      <a-gltf-model src="#pixel" rotation="180 0 180" scale="0.55 0.55 0.55"></a-gltf-model>
       </a-entity>
+
+      <a-entity mindar-face-target="anchorIndex: 151">
+	      <a-gltf-model src="#tophat" rotation="0 0 0" position="0 0.5 -0.55" scale="0.55 0.55 0.55"></a-gltf-model>
+      </a-entity>
+
+      
 
     </a-scene>
 
