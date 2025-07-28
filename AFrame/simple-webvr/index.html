@@ -4,10 +4,16 @@
     <meta charset="utf-8">
     <title>WebVR Room - Meta Quest</title>
     <meta name="description" content="Simple WebVR Room">
+    
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   </head>
   <body>
     <a-scene>
+
+      <a-assets>
+        <a-asset-item id="drone" src="models/drone.glb"></a-asset-item>
+      </a-assets>
+
       <!-- Skybox or Background -->
       <a-sky color="#ECECEC"></a-sky>
 
@@ -22,9 +28,11 @@
 
       <!-- Optional: Add objects in the room -->
       <a-box position="0 0.5 -3" depth="1" height="1" width="1" color="#4CC3D9"></a-box>
+      <a-gltf-model src="#drone" position="0 1.1 -3"></a-gltf-model>
       <a-sphere position="-2 1 -4" radius="0.5" color="#EF2D5E"></a-sphere>
       <a-cylinder position="2 0.75 -4" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
 
+      
       <!-- Camera rig for head-tracking -->
       <a-entity camera wasd-controls look-controls position="0 1.6 0"></a-entity>
 
