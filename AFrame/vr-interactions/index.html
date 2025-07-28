@@ -1,80 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>VR Room Interaction</title>
-    <meta name="description" content="VR Room Interaction with A-Frame">
+    <meta charset="utf-8" />
+    <title>VR Hall with Tables and Interactions</title>
+    <meta name="description" content="A VR scene with tables and interactable objects" />
+    
+    <!-- A-Frame Core -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    
-    <!-- Teleport and movement controls -->
+
+    <!-- Teleport Controls -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-teleport-controls@0.3.1/dist/aframe-teleport-controls.min.js"></script>
+
+    <!-- Extras (Optional but common features like movement-controls) -->
     <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
-    
-    <!-- Super Hands -->
+
+    <!-- Super Hands for interactions -->
     <script src="https://unpkg.com/super-hands@3.0.3/dist/super-hands.min.js"></script>
-    
-    <!-- Physics (Optional if using throw) -->
-    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+
   </head>
+
   <body>
-    <a-scene
-      background="color: #ECECEC"
-      physics="gravity: -9.8"
-      renderer="antialias: true"
-      vr-mode-ui="enabled: true"
-    >
+    <a-scene background="color: #ECECEC">
+
+      <!-- Sky -->
+      <a-sky color="#C9E7FF"></a-sky>
 
       <!-- Lighting -->
-      <a-entity light="type: ambient; intensity: 0.5"></a-entity>
-      <a-entity light="type: directional; intensity: 1" position="1 3 2"></a-entity>
-
-      <!-- Camera rig with hand controllers -->
-      <a-entity id="rig" movement-controls position="0 1.6 2">
-        <a-entity camera look-controls></a-entity>
-
-        <!-- Left Hand -->
-        <a-entity
-          id="leftHand"
-          hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
-          super-hands
-          physics-collider
-          stretchable
-          grabbable
-          draggable>
-        </a-entity>
-
-        <!-- Right Hand -->
-        <a-entity
-          id="rightHand"
-          hand-controls="hand: right; handModelStyle: lowPoly; color: #ccccff"
-          super-hands
-          physics-collider
-          stretchable
-          grabbable
-          draggable>
-        </a-entity>
-      </a-entity>
+      <a-entity light="type: ambient; color: #bbb"></a-entity>
+      <a-entity light="type: directional; color: #fff; intensity: 0.8" position="1 3 1"></a-entity>
 
       <!-- Floor -->
-      <a-plane color="#7BC8A4" height="20" width="20" rotation="-90 0 0" static-body></a-plane>
+      <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#7BC8A4"
+               class="clickable" teleport-target></a-plane>
 
-      <!-- Walls -->
-      <a-box position="0 2 -5" width="10" height="4" depth="0.1" color="#ccc" static-body></a-box>
-      <a-box position="-5 2 0" width="0.1" height="4" depth="10" color="#ccc" static-body></a-box>
-      <a-box position="5 2 0" width="0.1" height="4" depth="10" color="#ccc" static-body></a-box>
-      <a-box position="0 4 0" width="10" height="0.1" depth="10" color="#aaa" static-body></a-box>
+      <!-- Camera Rig -->
+      <a-entity id="rig" movement-controls position="0 1.6 0">
+        <a-entity camera look-controls wasd-controls></a-entity>
 
-      <!-- Table -->
-      <a-box position="0 0.75 -3" depth="1.5" height="0.1" width="2" color="#8B4513" static-body></a-box>
-      <!-- Table Legs -->
-      <a-box position="-0.9 0.35 -3.4" height="0.7" width="0.1" depth="0.1" color="#4B2E2E" static-body></a-box>
-      <a-box position="0.9 0.35 -3.4" height="0.7" width="0.1" depth="0.1" color="#4B2E2E" static-body></a-box>
-      <a-box position="-0.9 0.35 -2.6" height="0.7" width="0.1" depth="0.1" color="#4B2E2E" static-body></a-box>
-      <a-box position="0.9 0.35 -2.6" height="0.7" width="0.1" depth="0.1" color="#4B2E2E" static-body></a-box>
+        <!-- Right Controller -->
+        <a-entity teleport-controls="button: trigger; collisionEntities: .clickable"
+                  laser-controls="hand: right"
+                  raycaster="objects: .clickable"></a-entity>
 
-      <!-- Interactable Objects -->
-      <a-sphere position="-0.5 0.85 -3" radius="0.1" color="red" dynamic-body class="clickable"></a-sphere>
-      <a-box position="0 0.85 -3" depth="0.2" height="0.2" width="0.2" color="blue" dynamic-body class="clickable"></a-box>
-      <a-cylinder position="0.5 0.85 -3" radius="0.1" height="0.2" color="green" dynamic-body class="clickable"></a-cylinder>
+        <!-- Left & Right Hands with Super Hands -->
+        <a-entity hand-controls="hand: left" super-hands></a-entity>
+        <a-entity hand-controls="hand: right" super-hands></a-entity>
+      </a-entity>
+
+      <!-- 4 Tables with Objects -->
+
+      <!-- Table 1 -->
+      <a-box position="-8 0.75 -8" depth="2" height="1.5" width="2" color="#8B4513" class="clickable"></a-box>
+      <a-box position="-8 1.6 -8" color="#EF2D5E" grabbable stretchable draggable class="clickable"></a-box>
+      <a-sphere position="-7.5 1.6 -7.5" radius="0.3" color="#FFC65D" grabbable stretchable draggable class="clickable"></a-sphere>
+      <a-cylinder position="-8.5 1.6 -7.5" radius="0.2" height="0.5" color="#4CC3D9" grabbable stretchable draggable class="clickable"></a-cylinder>
+
+      <!-- Table 2 -->
+      <a-box position="8 0.75 -8" depth="2" height="1.5" width="2" color="#8B4513" class="clickable"></a-box>
+      <a-box position="8 1.6 -8" color="#FF6347" grabbable stretchable draggable class="clickable"></a-box>
+      <a-sphere position="7.5 1.6 -8.5" radius="0.3" color="#ADFF2F" grabbable stretchable draggable class="clickable"></a-sphere>
+      <a-cylinder position="8.5 1.6 -7.5" radius="0.2" height="0.5" color="#00CED1" grabbable stretchable draggable class="clickable"></a-cylinder>
+
+      <!-- Table 3 -->
+      <a-box position="-8 0.75 8" depth="2" height="1.5" width="2" color="#8B4513" class="clickable"></a-box>
+      <a-box position="-8 1.6 8" color="#8A2BE2" grabbable stretchable draggable class="clickable"></a-box>
+      <a-sphere position="-7.5 1.6 8.5" radius="0.3" color="#FF1493" grabbable stretchable draggable class="clickable"></a-sphere>
+      <a-cylinder position="-8.5 1.6 7.5" radius="0.2" height="0.5" color="#3CB371" grabbable stretchable draggable class="clickable"></a-cylinder>
+
+      <!-- Table 4 -->
+      <a-box position="8 0.75 8" depth="2" height="1.5" width="2" color="#8B4513" class="clickable"></a-box>
+      <a-box position="8 1.6 8" color="#FFD700" grabbable stretchable draggable class="clickable"></a-box>
+      <a-sphere position="7.5 1.6 7.5" radius="0.3" color="#20B2AA" grabbable stretchable draggable class="clickable"></a-sphere>
+      <a-cylinder position="8.5 1.6 8.5" radius="0.2" height="0.5" color="#FF4500" grabbable stretchable draggable class="clickable"></a-cylinder>
 
     </a-scene>
   </body>
