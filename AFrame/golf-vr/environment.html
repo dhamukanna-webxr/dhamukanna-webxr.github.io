@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Golf Course VR</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-teleport-controls@0.2.0/dist/aframe-teleport-controls.min.js"></script>
+  </head>
+  <body>
+    <a-scene shadow="type: pcfsoft" renderer="antialias: true">
+
+      <!-- Sky with safe panoramic image -->
+      <a-sky color="#88ccff" rotation="0 -90 0"></a-sky>
+
+      <!-- Terrain Plane -->
+      <a-plane 
+        position="0 0 0" 
+        rotation="-90 0 0" 
+        width="100" 
+        height="100"
+        color="#228B22"
+        shadow="receive: true">
+      </a-plane>
+
+      <!-- Raised Ground / Hills -->
+      <a-cylinder position="-10 2 -10" radius="5" height="4" color="#2E8B57"></a-cylinder>
+      <a-sphere position="8 1.5 -15" radius="3" color="#2E8B57"></a-sphere>
+
+      <!-- Golf Ball -->
+      <a-sphere position="0 0.3 -2" radius="0.2" color="white" shadow="cast: true"></a-sphere>
+
+      <!-- Hole -->
+      <a-cylinder position="0 0.01 -5" radius="0.2" height="0.02" color="black"></a-cylinder>
+
+      <!-- Tree -->
+      <a-cylinder position="-5 1 -7" radius="0.2" height="2" color="#8B4513"></a-cylinder>
+      <a-sphere position="-5 2.5 -7" radius="1" color="#006400"></a-sphere>
+
+      <!-- Lighting -->
+      <a-entity light="type: directional; intensity: 1; castShadow: true" position="5 10 5"></a-entity>
+      <a-entity light="type: ambient; intensity: 0.3"></a-entity>
+
+      <!-- Camera Rig with Teleport -->
+      <a-entity id="rig" position="0 1.6 5">
+        <a-entity id="head" camera wasd-controls look-controls></a-entity>
+
+        <a-entity teleport-controls="cameraRig: #rig; teleportOrigin: #head"
+                  laser-controls="hand: right"
+                  raycaster="objects: [data-teleportable]"
+                  line="color: blue"></a-entity>
+      </a-entity>
+
+      <!-- Add teleportable ground marker -->
+      <a-entity geometry="primitive: plane; height: 100; width: 100"
+                rotation="-90 0 0"
+                material="color: transparent; visible: false"
+                data-teleportable>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
