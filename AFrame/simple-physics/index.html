@@ -2,19 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>A-Frame Physics Scene with a-entity</title>
-    <meta name="description" content="Box on Table using Physics" />
+    <title>VR Physics Table Scene</title>
+    <meta name="description" content="Meta Quest VR Scene with Physics" />
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.3/dist/aframe-physics-system.min.js"></script>
   </head>
   <body>
-    <a-scene physics="gravity: -9.8" background="color: #ECECEC">
-
-      <!-- Camera -->
-      <a-entity position="0 2 5">
-        <a-camera></a-camera>
-      </a-entity>
-
+    <a-scene
+      vr-mode-ui="enabled: true"
+      physics="gravity: -9.8"
+      background="color: #ECECEC"
+      renderer="antialias: true"
+    >
       <!-- Floor -->
       <a-entity
         geometry="primitive: box; width: 10; height: 0.2; depth: 10"
@@ -39,15 +38,31 @@
         dynamic-body="mass: 2"
       ></a-entity>
 
-      <!-- Directional Light -->
-      <a-entity
-        light="type: directional; color: #FFF; intensity: 0.8"
-        position="0 4 4"
-      ></a-entity>
-
-      <!-- Ambient Light -->
+      <!-- Lights -->
+      <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="0 4 4"></a-entity>
       <a-entity light="type: ambient; color: #BBB"></a-entity>
 
+      <!-- Camera Rig with Controllers -->
+      <a-entity id="cameraRig" movement-controls position="0 1.6 3">
+        <!-- Camera -->
+        <a-entity camera look-controls wasd-controls-enabled="false"></a-entity>
+
+        <!-- Left Hand Controller -->
+        <a-entity
+          hand-controls="hand: left"
+          laser-controls
+          raycaster="objects: .interactive"
+          oculus-touch-controls="hand: left"
+        ></a-entity>
+
+        <!-- Right Hand Controller -->
+        <a-entity
+          hand-controls="hand: right"
+          laser-controls
+          raycaster="objects: .interactive"
+          oculus-touch-controls="hand: right"
+        ></a-entity>
+      </a-entity>
     </a-scene>
   </body>
 </html>

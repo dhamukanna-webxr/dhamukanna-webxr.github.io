@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Beach Scene - A-Frame</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <!-- Optional: A-Frame Extras for smoother movement, physics, etc. -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+  </head>
+  <body>
+    <a-scene background="color: #ECECEC">
+
+      <!-- Beach floor (sand) -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" 
+               material="src: textures/beach-floor.jpg; repeat: 50 50;">
+      </a-plane>
+
+      <!-- Ocean -->
+      <a-entity id="ocean"
+                geometry="primitive: circle; radius: 100"
+                rotation="-90 0 0"
+                position="0 0.01 0"
+                material="shader: flat; color: #3AC7F2; opacity: 0.9">
+      </a-entity>
+
+      <!-- Sky -->
+      <a-sky color="#87CEEB"></a-sky>
+
+      <!-- Sun Light -->
+      <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="0 10 0"></a-entity>
+      <a-entity light="type: ambient; color: #BBB"></a-entity>
+
+      <!-- Camera and controls for Quest -->
+      <a-entity id="rig" position="0 1.6 0">
+        <a-entity camera look-controls wasd-controls>
+          <a-entity cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"
+                    position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                    material="color: black; shader: flat">
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>

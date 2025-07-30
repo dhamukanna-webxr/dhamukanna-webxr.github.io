@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Beach Scene - A-Frame</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <!-- Optional: A-Frame Extras for smoother movement, physics, etc. -->
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+    <meta charset="utf-8">
+    <title>A-Frame Ocean Shader (Working)</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script>
+      AFRAME.registerShader('custom-ocean-shader', {
+        schema: {
+          timeMsec: { type: 'time', is: 'uniform' }
+        },
+        vertexShader: `
+          uniform float timeMsec;
+          varying vec2 vUV;
+          void main() {
+            vUV = uv;
+            vec3 pos = position;
+            float freq = 2.0;
+            float amp = 0.1;
+            pos.z += sin(pos.x * freq + timeMsec * 0.001) * amp;
+            pos.z += sin(pos.y * freq + timeMsec * 0.001) * amp;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec2 vUV;
+          void main() {
+            vec3 color = vec3(0.0, 0.4, 0.7);
+            gl_FragColor = vec4(color, 1.0);
+          }
+        `
+      });
+    </script>
   </head>
+
   <body>
-    <a-scene background="color: #ECECEC">
+    <a-scene background="color: #87CEEB">
+      <!-- Camera -->
+      <a-entity position="0 2 5">
+        <a-camera></a-camera>
+      </a-entity>
 
-      <!-- Beach floor (sand) -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" 
-               material="src: textures/beach-floor.jpg; repeat: 50 50;">
-      </a-plane>
-
-      <!-- Ocean -->
-      <a-entity id="ocean"
-                geometry="primitive: circle; radius: 100"
+      <!-- Ocean Plane with Custom Shader -->
+      <a-entity geometry="primitive: plane; width: 100; height: 100"
                 rotation="-90 0 0"
-                position="0 0.01 0"
-                material="shader: flat; color: #3AC7F2; opacity: 0.9">
+                position="0 0 0"
+                material="shader: custom-ocean-shader">
       </a-entity>
 
       <!-- Sky -->
       <a-sky color="#87CEEB"></a-sky>
 
-      <!-- Sun Light -->
-      <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="0 10 0"></a-entity>
-      <a-entity light="type: ambient; color: #BBB"></a-entity>
-
-      <!-- Camera and controls for Quest -->
-      <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls wasd-controls>
-          <a-entity cursor="fuse: false; rayOrigin: mouse" raycaster="objects: .clickable"
-                    position="0 0 -1" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
-                    material="color: black; shader: flat">
-          </a-entity>
-        </a-entity>
-      </a-entity>
-
+      <!-- Lights -->
+      <a-entity light="type: ambient; color: #ffffff; intensity: 0.6"></a-entity>
+      <a-entity light="type: directional; intensity: 0.8" position="2 10 5"></a-entity>
     </a-scene>
   </body>
 </html>
