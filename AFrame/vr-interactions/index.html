@@ -2,10 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>A-Frame VR Physics Interaction</title>
+    <title>A-Frame VR Physics Grab Demo</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.3/dist/aframe-physics-system.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.2/dist/super-hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-simple-grab/dist/aframe-simple-grab.min.js"></script>
   </head>
   <body>
     <a-scene physics="gravity: -9.8" background="color: #ECECEC">
@@ -13,58 +14,47 @@
       <!-- Camera -->
       <a-entity camera position="0 1.6 3"></a-entity>
 
-      <!-- Left Hand -->
-      <a-entity
+      <!-- Left hand -->
+      <a-entity id="leftHand"
         hand-controls="hand: left"
         super-hands
-        physics-collider
-        collision-filter="group: hand; collidesWith: cube"
         sphere-collider="objects: .grabbable"
+        physics-collider
       ></a-entity>
 
-      <!-- Right Hand -->
-      <a-entity
+      <!-- Right hand -->
+      <a-entity id="rightHand"
         hand-controls="hand: right"
         super-hands
-        physics-collider
-        collision-filter="group: hand; collidesWith: cube"
         sphere-collider="objects: .grabbable"
+        physics-collider
       ></a-entity>
 
       <!-- Floor -->
-      <a-entity
-        geometry="primitive: box; width: 10; height: 0.2; depth: 10"
-        material="color: #7BC8A4"
-        position="0 0 -1"
-        static-body
-      ></a-entity>
+      <a-entity geometry="primitive: box; width: 10; height: 0.2; depth: 10"
+                material="color: #7BC8A4"
+                position="0 0 -1"
+                static-body></a-entity>
 
       <!-- Table -->
-      <a-entity
-        geometry="primitive: box; width: 2; height: 1.2; depth: 1"
-        material="color: #8B4513"
-        position="0 0.6 -1"
-        static-body
-      ></a-entity>
+      <a-entity geometry="primitive: box; width: 2; height: 1.2; depth: 1"
+                material="color: #8B4513"
+                position="0 0.6 -1"
+                static-body></a-entity>
 
       <!-- Grabbable Cube -->
-      <a-entity
-        id="cube"
+      <a-entity id="cube"
+        class="grabbable"
         geometry="primitive: box; width: 0.5; height: 0.5; depth: 0.5"
         material="color: #4CC3D9"
         position="0 1.8 -1"
-        dynamic-body
-        class="grabbable"
-        grabbable
-        throwable
-        stretchable
-        draggable
-        collision-filter="group: cube; collidesWith: hand"
+        dynamic-body="mass: 1"
+        simple-grab
       ></a-entity>
 
       <!-- Lights -->
-      <a-entity light="type: directional; color: #fff; intensity: 0.8" position="1 4 2"></a-entity>
-      <a-entity light="type: ambient; color: #ccc"></a-entity>
+      <a-entity light="type: directional; intensity: 0.8" position="1 4 2"></a-entity>
+      <a-entity light="type: ambient; intensity: 0.5" position="0 2 0"></a-entity>
 
     </a-scene>
   </body>
