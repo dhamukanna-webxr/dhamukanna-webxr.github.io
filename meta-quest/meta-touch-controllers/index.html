@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Meta Touch Controls - Room Scene</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <!-- Meta Touch Controls (automatically included in latest A-Frame) -->
+    <!-- If needed, polyfill can be added, but it's not necessary for Oculus Browser -->
+  </head>
+  <body>
+    <a-scene
+      background="color: #ECECEC"
+      webxr="requiredFeatures: local-floor"
+      vr-mode-ui="enabled: false"
+    >
+
+      <!-- Camera Rig -->
+      <a-entity id="rig" position="0 1.6 0">
+        <a-entity camera look-controls wasd-controls></a-entity>
+      </a-entity>
+
+      <!-- Left Controller -->
+      <a-entity id="leftController"
+                meta-touch-controls="hand: left"
+                raycaster="objects: .interactable"
+                line="color: blue; opacity: 0.8"></a-entity>
+
+      <!-- Right Controller -->
+      <a-entity id="rightController"
+                meta-touch-controls="hand: right"
+                raycaster="objects: .interactable"
+                line="color: red; opacity: 0.8"></a-entity>
+
+      <!-- Floor -->
+      <a-plane rotation="-90 0 0" width="10" height="10" color="#888" shadow></a-plane>
+
+      <!-- Walls -->
+      <a-box position="0 1 -5" width="10" height="2" depth="0.1" color="#CCC"></a-box>
+      <a-box position="0 1 5" width="10" height="2" depth="0.1" color="#CCC"></a-box>
+      <a-box position="5 1 0" width="0.1" height="2" depth="10" color="#CCC"></a-box>
+      <a-box position="-5 1 0" width="0.1" height="2" depth="10" color="#CCC"></a-box>
+
+      <!-- Scattered Objects -->
+      <a-box position="-1 0.25 -2" depth="0.5" height="0.5" width="0.5" color="#F16745" class="interactable"></a-box>
+      <a-sphere position="1 0.25 -3" radius="0.3" color="#7BC8A4" class="interactable"></a-sphere>
+      <a-cylinder position="0.5 0.25 1" radius="0.2" height="0.5" color="#FFC65D" class="interactable"></a-cylinder>
+      <a-box position="-2 0.25 2" depth="0.4" height="0.4" width="0.4" color="#4CC3D9" class="interactable"></a-box>
+
+      <!-- Lighting -->
+      <a-entity light="type: ambient; intensity: 0.5"></a-entity>
+      <a-entity light="type: directional; intensity: 0.7" position="1 3 2"></a-entity>
+
+    </a-scene>
+  </body>
+</html>
