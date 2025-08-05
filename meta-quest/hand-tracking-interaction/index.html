@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Hand Physics Grab + Throw (Quest 3)</title>
-    <!-- Required scripts -->
+    <meta charset="utf-8">
+    <title>Hand Tracking Grab & Throw (Fixed)</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://unpkg.com/aframe-super-hands-component@5.0.0/dist/aframe-super-hands.min.js"></script>
@@ -25,36 +24,65 @@
       <a-entity light="type: ambient; intensity: 1"></a-entity>
       <a-entity light="type: directional; intensity: 0.5" position="0 5 2"></a-entity>
 
-      <!-- Right Hand -->
-      <a-entity id="rightHand"
-                hand-tracking-controls="hand: right; model: true"
-                super-hands
-                sphere-collider="objects: .grabbable"
-                ></a-entity>
-
-      <!-- Left Hand -->
-      <a-entity id="leftHand"
-                hand-tracking-controls="hand: left; model: true"
-                super-hands
-                sphere-collider="objects: .grabbable"
-                ></a-entity>
-
-      <!-- Grabbable Physics Cube -->
+      <!-- Grabbable Cube -->
       <a-box class="grabbable"
              dynamic-body
              color="#FFC65D"
              position="0 1.5 -1"
              depth="0.2"
              height="0.2"
-             width="0.2"
-             ></a-box>
+             width="0.2"></a-box>
 
-      <!-- Another Grabbable Sphere -->
+      <!-- Grabbable Sphere -->
       <a-sphere class="grabbable"
                 dynamic-body
                 radius="0.1"
                 color="#7BC8A4"
                 position="0.3 1.6 -1"></a-sphere>
+
+      <!-- Right Hand with manual pinch -->
+      <a-entity id="rightHand"
+                hand-tracking-controls="hand: right"
+                super-hands
+                sphere-collider="objects: .grabbable"
+                hand-pinch-grabber></a-entity>
+
+      <!-- Left Hand -->
+      <a-entity id="leftHand"
+                hand-tracking-controls="hand: left"
+                super-hands
+                sphere-collider="objects: .grabbable"
+                hand-pinch-grabber></a-entity>
+
+      <script>
+        AFRAME.registerComponent('hand-pinch-grabber', {
+          schema: { threshold: { type: 'number', default: 0.015 } }, // ~1.5cm
+
+          init: function () {
+            this.isPinching = false;
+          },
+
+          tick: function () {
+            const handObj = this.el.object3D;
+            const thumbTip = handObj.getObjectByName('thumb-tip');
+            const indexTip = handObj.getObjectByName('index-finger-tip');
+
+            if (!thumbTip || !indexTip) return;
+
+            const dist = thumbTip.position.distanceTo(indexTip.position);
+
+            if (dist < this.data.threshold && !this.isPinching) {
+              this.isPinching = true;
+              this.el.emit('grab-start', { hand: this.el });
+            }
+
+            if (dist >= this.data.threshold && this.isPinching) {
+              this.isPinching = false;
+              this.el.emit('grab-end', { hand: this.el });
+            }
+          }
+        });
+      </script>
 
     </a-scene>
   </body>
