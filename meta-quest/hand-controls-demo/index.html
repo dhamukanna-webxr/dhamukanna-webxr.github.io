@@ -2,28 +2,40 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Meta Quest 3 Hand Controls</title>
+    <title>Quest 3 Controller Tracking</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   </head>
   <body>
     <a-scene background="color: #ECECEC">
-      <!-- Camera -->
+      
+      <!-- Camera Rig -->
       <a-entity id="rig" position="0 1.6 0">
         <a-camera>
-          <a-cursor color="#FF0000"></a-cursor>
+          <a-cursor></a-cursor>
         </a-camera>
       </a-entity>
 
       <!-- Floor -->
       <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
-      <!-- Controller-tracked Hands -->
-      <a-entity hand-controls="hand: left; handModelStyle: lowPoly; color: #FFDD00"></a-entity>
-      <a-entity hand-controls="hand: right; handModelStyle: lowPoly; color: #0099FF"></a-entity>
+      <!-- Left Controller with Oculus Touch Controls -->
+      <a-entity 
+        oculus-touch-controls="hand: left" 
+        laser-controls 
+        raycaster="objects: .clickable">
+      </a-entity>
+
+      <!-- Right Controller with Oculus Touch Controls -->
+      <a-entity 
+        oculus-touch-controls="hand: right" 
+        laser-controls 
+        raycaster="objects: .clickable">
+      </a-entity>
 
       <!-- Lighting -->
-      <a-entity light="type: ambient; color: #BBB"></a-entity>
-      <a-entity light="type: directional; intensity: 0.6" position="1 3 1"></a-entity>
+      <a-entity light="type: ambient; color: #FFF"></a-entity>
+      <a-entity light="type: directional; intensity: 0.5" position="0 2 1"></a-entity>
+
     </a-scene>
   </body>
 </html>
