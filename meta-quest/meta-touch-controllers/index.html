@@ -2,56 +2,29 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Meta Touch Controller Fix</title>
+    <title>Meta Touch Controller</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   </head>
   <body>
-    <a-scene
-      background="color: #ECECEC"
-      webxr="requiredFeatures: local-floor"
-      vr-mode-ui="enabled: false"
-    >
+    <a-scene>
 
       <!-- Camera Rig -->
      <a-entity id="rig" position="0 1.6 0">
-  <a-entity camera look-controls wasd-controls></a-entity>
+     <a-entity camera look-controls wasd-controls></a-entity>
 
-  <!-- LEFT Controller -->
-  <a-entity id="leftController"
-            meta-touch-controls="hand: left"
-            raycaster="objects: .interactable"
-            line="color: blue; opacity: 0.9; visible: true"
-            cursor="fuse: false; rayOrigin: entity; fuseTimeout: 500">
-    <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-              material="color: blue; shader: flat"
-              position="0 0 -1">
-    </a-entity>
-  </a-entity>
+     <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
+     <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
 
-  <!-- RIGHT Controller -->
-  <a-entity id="rightController"
-            meta-touch-controls="hand: right"
-            raycaster="objects: .interactable"
-            line="color: red; opacity: 0.9; visible: true"
-            cursor="fuse: false; rayOrigin: entity; fuseTimeout: 500">
-    <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-              material="color: red; shader: flat"
-              position="0 0 -1">
-    </a-entity>
-  </a-entity>
-</a-entity>
+     <!-- Ground -->
+    <a-plane static-body rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
-      <!-- Ground -->
-      <a-plane rotation="-90 0 0" width="10" height="10" color="#888"></a-plane>
-
-      <!-- Example Object to Point At -->
-      <a-box class="interactable"
-       position="0 1.5 -3"
-       color="orange"
-       depth="1" height="1" width="1"
-       event-set__enter="_event: mouseenter; color: yellow"
-       event-set__leave="_event: mouseleave; color: orange">
-</a-box>
+    <a-box id="cube"
+             color="orange"
+             position="0 1.5 -1"
+             depth="0.2"
+             height="0.2"
+             width="0.2"
+      ></a-box>
 
     </a-scene>
   </body>
