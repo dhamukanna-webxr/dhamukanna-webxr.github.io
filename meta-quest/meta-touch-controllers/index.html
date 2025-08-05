@@ -13,29 +13,45 @@
     >
 
       <!-- Camera Rig -->
-      <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls wasd-controls></a-entity>
+     <a-entity id="rig" position="0 1.6 0">
+  <a-entity camera look-controls wasd-controls></a-entity>
 
-        <!-- Left Controller -->
-        <a-entity id="leftController"
-                  meta-touch-controls="hand: left"
-                  raycaster="objects: .interactable; showLine: true"
-                  line="color: blue; opacity: 0.9"
-                  cursor="fuse: false; rayOrigin: entity"></a-entity>
+  <!-- LEFT Controller -->
+  <a-entity id="leftController"
+            meta-touch-controls="hand: left"
+            raycaster="objects: .interactable"
+            line="color: blue; opacity: 0.9; visible: true"
+            cursor="fuse: false; rayOrigin: entity; fuseTimeout: 500">
+    <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+              material="color: blue; shader: flat"
+              position="0 0 -1">
+    </a-entity>
+  </a-entity>
 
-        <!-- Right Controller -->
-        <a-entity id="rightController"
-                  meta-touch-controls="hand: right"
-                  raycaster="objects: .interactable; showLine: true"
-                  line="color: red; opacity: 0.9"
-                  cursor="fuse: false; rayOrigin: entity"></a-entity>
-      </a-entity>
+  <!-- RIGHT Controller -->
+  <a-entity id="rightController"
+            meta-touch-controls="hand: right"
+            raycaster="objects: .interactable"
+            line="color: red; opacity: 0.9; visible: true"
+            cursor="fuse: false; rayOrigin: entity; fuseTimeout: 500">
+    <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+              material="color: red; shader: flat"
+              position="0 0 -1">
+    </a-entity>
+  </a-entity>
+</a-entity>
 
       <!-- Ground -->
       <a-plane rotation="-90 0 0" width="10" height="10" color="#888"></a-plane>
 
       <!-- Example Object to Point At -->
-      <a-box class="interactable" position="0 1.5 -3" color="orange" depth="1" height="1" width="1"></a-box>
+      <a-box class="interactable"
+       position="0 1.5 -3"
+       color="orange"
+       depth="1" height="1" width="1"
+       event-set__enter="_event: mouseenter; color: yellow"
+       event-set__leave="_event: mouseleave; color: orange">
+</a-box>
 
     </a-scene>
   </body>
