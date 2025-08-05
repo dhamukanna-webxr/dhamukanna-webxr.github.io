@@ -2,82 +2,40 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Meta Quest 3 Manual Left Controller Tracking</title>
+    <title>Quest 3 Hand Tracking</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   </head>
   <body>
     <a-scene
       background="color: #ECECEC"
+      webxr="optionalFeatures: hand-tracking; requiredFeatures: local-floor"
       vr-mode-ui="enabled: false"
-      webxr="optionalFeatures: local-floor, bounded-floor"
-      embedded
     >
-      <!-- Head Camera -->
+
+      <!-- Camera -->
       <a-entity camera look-controls></a-entity>
 
-      <!-- Right Controller (works via built-in binding) -->
+      <!-- Left Hand -->
       <a-entity
-        id="rightController"
-        tracked-controls-webxr="hand: right"
-        laser-controls
-        raycaster="objects: .clickable"
-        controller-debug
-      >
-        <a-sphere radius="0.02" color="blue" position="0 0 -0.05"></a-sphere>
-      </a-entity>
+        id="leftHand"
+        hand-tracking-controls="hand: left; model: true"
+        visible="true"
+      ></a-entity>
 
-      <!-- Left Controller (we'll update manually) -->
+      <!-- Right Hand -->
       <a-entity
-        id="leftController"
-        laser-controls
-        raycaster="objects: .clickable"
-      >
-        <a-sphere radius="0.02" color="red" position="0 0 -0.05"></a-sphere>
-      </a-entity>
+        id="rightHand"
+        hand-tracking-controls="hand: right; model: true"
+        visible="true"
+      ></a-entity>
 
-      <!-- Floor -->
+      <!-- Ground -->
       <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
 
-      <!-- Light -->
-      <a-entity light="type: ambient; color: #fff"></a-entity>
+      <!-- Lights -->
+      <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+      <a-entity light="type: directional; intensity: 0.5" position="1 3 2"></a-entity>
 
-      <!-- Manual Pose Tracker Script -->
-      <script>
-        AFRAME.registerComponent('manual-left-tracker', {
-          init: function () {
-            const self = this;
-            const el = this.el;
-            let referenceSpace;
-            let xrSession;
-
-            el.sceneEl.renderer.xr.addEventListener('sessionstart', () => {
-              xrSession = el.sceneEl.renderer.xr.getSession();
-              referenceSpace = el.sceneEl.renderer.xr.getReferenceSpace();
-            });
-
-            this.el.sceneEl.renderer.setAnimationLoop(function () {
-              const frame = el.sceneEl.frame;
-              if (!frame || !xrSession || !referenceSpace) return;
-
-              for (const source of xrSession.inputSources) {
-                if (source.handedness === 'left' && source.gripSpace) {
-                  const pose = frame.getPose(source.gripSpace, referenceSpace);
-                  if (pose) {
-                    const position = pose.transform.position;
-                    const orientation = pose.transform.orientation;
-                    el.object3D.position.set(position.x, position.y, position.z);
-                    el.object3D.quaternion.set(orientation.x, orientation.y, orientation.z, orientation.w);
-                  }
-                }
-              }
-            });
-          }
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-          document.querySelector('#leftController').setAttribute('manual-left-tracker', '');
-        });
-      </script>
     </a-scene>
   </body>
 </html>
