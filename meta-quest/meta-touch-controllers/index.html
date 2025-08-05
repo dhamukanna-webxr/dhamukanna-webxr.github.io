@@ -4,6 +4,50 @@
     <meta charset="utf-8">
     <title>Meta Touch Controller</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <script>
+  AFRAME.registerComponent('simple-hand-grab', {
+    schema: { threshold: { default: 0.015 } },
+    init: function () {
+      this.grabbing = false;
+      this.thumbTip = null;
+      this.indexTip = null;
+      this.grabbed = null;
+      this.target = document.querySelector('#cube');
+    },
+    tick: function () {
+      const hand = this.el.object3D;
+      if (!this.thumbTip) {
+        this.thumbTip = hand.getObjectByName('thumb-tip');
+        this.indexTip = hand.getObjectByName('index-finger-tip');
+        if (!this.thumbTip || !this.indexTip) return;
+      }
+
+      const dist = this.thumbTip.position.distanceTo(this.indexTip.position);
+      const targetObj = this.target.object3D;
+
+      // Detect pinch near cube
+      if (dist < this.data.threshold && !this.grabbing) {
+        const handWorld = new THREE.Vector3();
+        this.el.object3D.getWorldPosition(handWorld);
+        const cubeWorld = new THREE.Vector3();
+        targetObj.getWorldPosition(cubeWorld);
+        const grabDistance = handWorld.distanceTo(cubeWorld);
+        if (grabDistance < 0.15) {
+          this.grabbing = true;
+          hand.attach(targetObj);
+        }
+      }
+
+      // Release pinch
+      if (dist >= this.data.threshold && this.grabbing) {
+        this.el.sceneEl.object3D.attach(this.target.object3D);
+        this.grabbing = false;
+      }
+    }
+  });
+</script>
+
   </head>
   <body>
     <a-scene>
@@ -12,8 +56,10 @@
      <a-entity id="rig" position="0 1.6 0">
      <a-entity camera look-controls wasd-controls></a-entity>
 
-     <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
-     <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
+     <a-entity id="leftHand" hand-tracking-controls="hand: left;" ></a-entity>
+     <a-entity id="rightHand" hand-tracking-controls="hand: right;" simple-hand-grab>
+      <a-sphere radius="0.01" color="red" position="0 0 0"></a-sphere>
+     </a-entity>
 
      <!-- Ground -->
     <a-plane static-body rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
