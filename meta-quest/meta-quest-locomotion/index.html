@@ -16,9 +16,26 @@
                          lightPosition: 1 3 -2;
                          fog: 0.3">
                          
-      <!-- Camera Rig with Locomotion -->
-      <a-entity id="rig" position="0 1.6 0" movement-controls>
-        <a-entity camera look-controls wasd-controls></a-entity>
+       <!-- Camera Rig for locomotion -->
+      <a-entity id="rig" movement-controls position="0 0 5">
+
+        <!-- Head (VR camera) -->
+        <a-entity camera look-controls wasd-controls-enabled="false"
+            position="0 1.6 0">
+        </a-entity>
+
+        <!-- Left hand controller -->
+        <a-entity laser-controls="hand: left"
+            thumbstick-move
+            raycaster="objects: .clickable">
+        </a-entity>
+
+        <!-- Right hand controller -->
+        <a-entity laser-controls="hand: right"
+            thumbstick-move
+            raycaster="objects: .clickable">
+        </a-entity>
+
       </a-entity>
 
     </a-scene>
