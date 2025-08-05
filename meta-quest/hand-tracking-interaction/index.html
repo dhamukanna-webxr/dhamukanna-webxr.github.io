@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Manual Hand Grab + Throw</title>
+    <meta charset="utf-8">
+    <title>Grab via Sphere Collider (Hand Tracking)</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
   </head>
@@ -13,6 +13,7 @@
       vr-mode-ui="enabled: false"
     >
 
+      <!-- Camera -->
       <a-entity camera position="0 1.6 0"></a-entity>
 
       <!-- Light -->
@@ -35,65 +36,72 @@
       <!-- Right Hand -->
       <a-entity id="rightHand"
                 hand-tracking-controls="hand: right"
-                hand-grab-throw></a-entity>
+                hand-grabber>
+        <!-- Fingertip Grab Sphere -->
+        <a-sphere id="grabber"
+                  radius="0.025"
+                  color="red"
+                  position="0 0 0"
+                  visible="true"></a-sphere>
+      </a-entity>
 
       <script>
-        AFRAME.registerComponent('hand-grab-throw', {
-          schema: { threshold: { default: 0.02 } }, // pinch distance
+        AFRAME.registerComponent('hand-grabber', {
+          schema: { threshold: { default: 0.015 } },
 
           init: function () {
-            this.el.isGrabbing = false;
-            this.grabbed = null;
+            this.grabbing = false;
+            this.grabbedEl = null;
+            this.thumbTip = null;
+            this.indexTip = null;
+            this.grabber = this.el.querySelector('#grabber');
           },
 
           tick: function () {
             const handObj = this.el.object3D;
-            const thumbTip = handObj.getObjectByName('thumb-tip');
-            const indexTip = handObj.getObjectByName('index-finger-tip');
-            const cube = document.querySelector('#cube');
-
-            if (!thumbTip || !indexTip || !cube) return;
-
-            const dist = thumbTip.position.distanceTo(indexTip.position);
-
-            if (dist < this.data.threshold && !this.el.isGrabbing) {
-              // Start grab
-              const cubeObj = cube.object3D;
-              const handWorldPos = new THREE.Vector3();
-              this.el.object3D.getWorldPosition(handWorldPos);
-
-              const cubeWorldPos = new THREE.Vector3();
-              cubeObj.getWorldPosition(cubeWorldPos);
-
-              const distanceToCube = handWorldPos.distanceTo(cubeWorldPos);
-              if (distanceToCube < 0.15) { // hand close to cube
-                this.el.isGrabbing = true;
-                this.grabbed = cube;
-
-                // Freeze physics & parent to hand
-                cube.removeAttribute('dynamic-body');
-                handObj.attach(cubeObj);
-              }
+            if (!this.thumbTip) {
+              this.thumbTip = handObj.getObjectByName('thumb-tip');
+              this.indexTip = handObj.getObjectByName('index-finger-tip');
             }
 
-            // Release on unpinch
-            if (dist >= this.data.threshold && this.el.isGrabbing && this.grabbed) {
-              this.el.isGrabbing = false;
+            if (!this.thumbTip || !this.indexTip || !this.grabber) return;
 
-              // Detach from hand and add physics back
-              const cube = this.grabbed;
-              this.el.sceneEl.object3D.attach(cube.object3D);
-              cube.setAttribute('dynamic-body', '');
+            // Update grab sphere position to follow index finger tip
+            const worldPos = new THREE.Vector3();
+            this.indexTip.getWorldPosition(worldPos);
+            this.grabber.object3D.position.copy(this.el.object3D.worldToLocal(worldPos));
 
-              // Add throwing force (optional)
-              const handVelocity = this.el.getAttribute('velocity') || {x:0, y:0, z:0};
-              cube.body.velocity.set(
-                handVelocity.x,
-                handVelocity.y,
-                handVelocity.z
-              );
+            // Pinch detection
+            const pinchDist = this.thumbTip.position.distanceTo(this.indexTip.position);
+            const isPinching = pinchDist < this.data.threshold;
 
-              this.grabbed = null;
+            // If pinching and near cube → grab
+            const cube = document.querySelector('#cube');
+            const cubeObj = cube.object3D;
+
+            const grabberWorld = new THREE.Vector3();
+            this.grabber.object3D.getWorldPosition(grabberWorld);
+
+            const cubeWorld = new THREE.Vector3();
+            cubeObj.getWorldPosition(cubeWorld);
+
+            const grabDistance = grabberWorld.distanceTo(cubeWorld);
+
+            if (isPinching && !this.grabbing && grabDistance < 0.1) {
+              // Grab
+              cube.removeAttribute('dynamic-body');
+              handObj.attach(cubeObj);
+              this.grabbing = true;
+              this.grabbedEl = cube;
+            }
+
+            if (!isPinching && this.grabbing) {
+              // Release
+              const scene = this.el.sceneEl;
+              scene.object3D.attach(this.grabbedEl.object3D);
+              this.grabbedEl.setAttribute('dynamic-body', '');
+              this.grabbing = false;
+              this.grabbedEl = null;
             }
           }
         });
