@@ -2,50 +2,45 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Desert + Controllers (Meta Quest)</title>
+    <title> Meta Quest Desert Environment </title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
   </head>
   <body>
-    <a-scene environment="preset: yavapai; groundColor: #EDC9Af; groundTexture: walkernoise; dressing: stones; dressingAmount: 10; lightPosition: 1 3 -2; skyColor: #FFD580" webxr="requiredFeatures: local-floor">
+    <a-scene environment="
+      preset: goldmine;
 
-      <!-- Camera Rig -->
-      <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls wasd-controls></a-entity>
+      skyType: gradient;
+      skyColor: #FFD580;
+      horizonColor: #FFDEAD;
 
-        <!-- Left Controller -->
-        <a-entity id="leftController"
-                  meta-touch-controls="hand: left"
-                  raycaster="objects: .interactable"
-                  line="color: blue; opacity: 0.9"
-                  cursor="rayOrigin: entity; fuse: false; fuseTimeout: 500">
-          <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-                    material="color: blue; shader: flat"
-                    position="0 0 -1">
-          </a-entity>
-        </a-entity>
+      ground: hills;
+      groundYScale: 5;
+      groundTexture: walkernoise;
+      groundColor: #EDC9Af;
+      groundColor2: #DEB887;
 
-        <!-- Right Controller -->
-        <a-entity id="rightController"
-                  meta-touch-controls="hand: right"
-                  raycaster="objects: .interactable"
-                  line="color: red; opacity: 0.9"
-                  cursor="rayOrigin: entity; fuse: false; fuseTimeout: 500">
-          <a-entity geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-                    material="color: red; shader: flat"
-                    position="0 0 -1">
-          </a-entity>
-        </a-entity>
-      </a-entity>
+      dressing: trees;
+      dressingAmount: 30;
+      dressingColor: #A0522D;
+      dressingScale: 5;
+      dressingVariance: 0.5;
+      dressingUniformScale: true;
 
-      <!-- Interactable Object -->
-      <a-box class="interactable"
-             position="0 1 -3"
-             color="#D2691E"
-             depth="1" height="1" width="1"
-             event-set__enter="_event: mouseenter; color: yellow"
-             event-set__leave="_event: mouseleave; color: #D2691E">
-      </a-box>
+      fog: 0.8;
+      fogColor: #F4E6C0;
+
+      lightPosition: 1 4 -3;
+      lighting: distant;
+      lightIntensity: 1;
+      shadow: true;
+      playArea: 1;
+
+      grid: none;
+    ">
+
+      <!-- Camera -->
+      <a-entity camera position="0 1.6 0" look-controls wasd-controls></a-entity>
 
     </a-scene>
   </body>
