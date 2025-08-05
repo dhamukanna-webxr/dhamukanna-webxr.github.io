@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Meta Quest 3 Hand Controls</title>
+    <meta name="description" content="Track Hands with Low-Poly Models in A-Frame" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- A-Frame Core -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <!-- Optional: controller models (optional but can improve visuals) -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.controls.min.js"></script>
+  </head>
+
+  <body>
+    <a-scene
+      background="color: #ECECEC"
+      vr-mode-ui="enabled: true"
+      embedded
+      renderer="antialias: true"
+      xrweb="hand-tracking: true"
+    >
+      <!-- Camera and Cursor -->
+      <a-entity id="cameraRig" position="0 1.6 0">
+        <a-camera>
+          <a-cursor color="#FF0000"></a-cursor>
+        </a-camera>
+      </a-entity>
+
+      <!-- Floor -->
+      <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+
+      <!-- Left Hand (low-poly model) -->
+      <a-entity
+        hand-controls="hand: left; handModelStyle: lowPoly; color: #FFDD00"
+      ></a-entity>
+
+      <!-- Right Hand (low-poly model) -->
+      <a-entity
+        hand-controls="hand: right; handModelStyle: lowPoly; color: #0099FF"
+      ></a-entity>
+
+      <!-- Lighting -->
+      <a-entity light="type: ambient; color: #BBB"></a-entity>
+      <a-entity light="type: directional; intensity: 0.6" position="1 3 1"></a-entity>
+    </a-scene>
+  </body>
+</html>
